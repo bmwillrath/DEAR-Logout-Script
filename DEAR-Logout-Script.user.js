@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         DEAR Logout Script
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  https://www.freelancer.com/u/awonderful
-// @author       Andrey Tanner - andrew.wonderful@gmail.com - https://www.freelancer.com/u/awonderful
+// @namespace    http://dearsystems.com/
+// @version      0.1.1
+// @description  This script will wait for a period of inactivity in DEAR and show a countdown. Then if there is an active sale, park the sale and logout, if there is no sale data, it will simply logout. This timeout will not occur on the payment screen. 
+// @author       Braydan Willrath & Andrey Tanner - andrew.wonderful@gmail.com - https://www.freelancer.com/u/awonderful
 // @match        https://pos.dearsystems.com/*
 // @grant        unsafeWindow
 // ==/UserScript==
@@ -11,8 +11,8 @@
 (function() {
     'use strict';
 
-    var InactivitySeconds=5; // Seconds to check inactivity
-    var TimeoutSeconds=5; // Countdown seconds
+    var InactivitySeconds=15; // Seconds to check inactivity
+    var TimeoutSeconds=45; // Countdown seconds
     var time,timeleft,dialog,countdownTimer,logouttimer,processing=0,_=function(id){return document.querySelector(id)},_q=function(id){return document.querySelectorAll(id)};
 
 function onVisibilityChange(callback) {
@@ -55,7 +55,7 @@ function triggerMouseEvent (node, eventType) {
     function typeAndSend(){
         if(_('#saleNoteArea')){
            clearTimeout(dialog);
-           _('#saleNoteArea').value='Parked by DEAR Logout Script';
+           _('#saleNoteArea').value='';
            window.setTimeout(function(){_('#saleNoteArea').dispatchEvent(new Event('change'));},300);
            if(_("button[ng-mobile-click^='closeAddSaleNoteDialog(false)']")){
               window.setTimeout(function(){var targetNode=_q("button[ng-mobile-click^='closeAddSaleNoteDialog(false)'] span")[2].querySelector("span");triggerMouseEvent(targetNode, "click");triggerMouseEvent(targetNode, "touchend");},500);
